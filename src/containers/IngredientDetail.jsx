@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
 
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 
+import ClickableAvatar from '../components/ClickableAvatar';
 import FoodRow from '../components/FoodRow';
 
 import { useGetIngredientsQuery, useGetMealsByMainIngredientQuery } from '../services/theMealDBAPI';
@@ -65,7 +65,7 @@ const IngredientDetail = () => {
                 alignItems: "flex-start", 
                 padding: "5rem 10rem", 
             }}>
-                <Avatar src={`https://www.themealdb.com/images/ingredients/${ingredient?.strIngredient}.png`} alt={ingredient?.strIngredient} variant="square" sx={{ width: 500, height: 500 }}/>
+                <ClickableAvatar src={`https://www.themealdb.com/images/ingredients/${ingredient?.strIngredient}.png`} alt={ingredient?.strIngredient} variant="square" sx={{ width: 500, height: 500 }}/>
                 <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0 5rem" }}>
                     <Typography variant="h2" color="primary" sx={{ fontWeight: "bold" }}>{ingredient?.strIngredient}</Typography>                
                     <br/>

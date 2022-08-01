@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
+
+import ClickableAvatar from '../components/ClickableAvatar';
 
 import { useGetMealByIdQuery } from '../services/theMealDBAPI';
 
@@ -26,7 +27,7 @@ const TodaySpecial = () => {
                 gap: "5rem" }} >
                 <Typography variant="h2" color="info" sx={{ fontWeight: "bold" }}>Today's Special</Typography>
                 <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <Avatar 
+                    <ClickableAvatar 
                         sx = {{ border: "10px solid white", height: 500, width: 500, transform: "rotate(-5deg)", "&:hover": { transform: "scale(1.2)", transition: "0.25s" } }}
                         src = {data?.meals ? data?.meals[0]?.strMealThumb : ""}
                         alt = {data?.meals ? data?.meals[0]?.strMeal : ""}

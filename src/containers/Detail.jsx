@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+import ClickableAvatar from '../components/ClickableAvatar';
 import FoodIngredientRow from '../components/FoodIngredientRow';
 
 import { useGetMealByIdQuery } from '../services/theMealDBAPI';
@@ -46,7 +46,7 @@ const Detail = () => {
                 padding: "5rem 10rem", 
                 backgroundImage: "linear-gradient(to bottom, rgb(230,230,230) 0%, rgb(230,230,230) 275px, rgb(255, 255, 255) 275px, rgb(255, 255, 255) 100%)" 
             }}>
-                <Avatar src={meal?.strMealThumb} alt={meal?.strMeal} variant="square" sx={{ width: 500, height: 500, border: "10px solid white" }}/>
+                <ClickableAvatar src={meal?.strMealThumb} alt={meal?.strMeal} variant="square" sx={{ width: 500, height: 500, border: "10px solid white" }}/>
                 <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0 5rem" }}>
                     <Typography variant="h2" color="primary" sx={{ fontWeight: "bold" }} textAlign="left">{meal?.strMeal}</Typography>
                     <br/>
@@ -67,7 +67,7 @@ const Detail = () => {
                     <Box sx={{ display: "flex", flexDirection: "row", gap: "0.2rem", flexWrap: "wrap" }}>
                         {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((number) => {
                             if (meal["strIngredient" + number]){
-                                return <FoodIngredientRow ingredient={meal["strIngredient" + number]} amount={meal["strMeasure" + number]} />;
+                                return <FoodIngredientRow key={meal["strIngredient" + number]} ingredient={meal["strIngredient" + number]} amount={meal["strMeasure" + number]} />;
                             }
                             return null;
                         })}
