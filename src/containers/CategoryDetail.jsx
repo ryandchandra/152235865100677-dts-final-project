@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
+
+import { ScreenContext } from '../contexts/ScreenContext';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,9 +15,12 @@ import FoodRow from '../components/FoodRow';
 
 import { useGetCategoriesQuery, useGetMealsByCategoryQuery } from '../services/theMealDBAPI';
 
+
 const ENTRIES_ON_ONE_PAGE = 5;
 
 const CategoryDetail = () => {
+    const { isMobile } = useContext(ScreenContext)
+
     const [category, setCategory] = useState({});
     
     const page = useSelector(selectPage);
@@ -61,12 +66,19 @@ const CategoryDetail = () => {
         <>
             <Box sx={{ 
                 display: "flex", 
-                flexDirection: "row", 
-                alignItems: "flex-start", 
-                padding: "5rem 10rem", 
+                flexDirection: isMobile ? "column" : "row", 
+                alignItems: isMobile ? "center" : "flex-start", 
+                padding: isMobile ? "5rem" : "5rem 10rem", 
             }}>
-                <ClickableAvatar src={category?.strCategoryThumb} alt={category?.strCategory} variant="square" sx={{ width: 500, height: 500 }}/>
-                <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0 5rem" }}>
+                <ClickableAvatar 
+                    src={category?.strCategoryThumb} 
+                    alt={category?.strCategory} 
+                    variant="square" 
+                    sx={{ 
+                        width: isMobile ? 400 : 500, 
+                        height: isMobile ? 400 : 500 
+                    }} />
+                <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: isMobile ? "2rem 0" : "0 5rem" }}>
                     <Typography variant="h2" color="primary" sx={{ fontWeight: "bold" }}>{category?.strCategory}</Typography>                
                     <br/>
                     <Typography variant="h6" sx={{ color: "info.dark" }}>Description:</Typography> 

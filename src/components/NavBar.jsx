@@ -20,7 +20,6 @@ import Typography from '@mui/material/Typography';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-// import Search from '@mui/icons-material/Search';
 
 import { grey } from "@mui/material/colors";
 
@@ -119,9 +118,7 @@ const NavBar = () => {
                             </Button>
                         ))}
                     </Box>
-                    {/* <IconButton size="large" aria-label="search" color="info" sx={{ mr: 2 }}>
-                        <Search />
-                    </IconButton> */}
+
                     { user ? ( 
                         <>
                             <Typography color="info" sx={{ mr: 2 }}>{user?.email}</Typography>

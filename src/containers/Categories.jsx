@@ -17,7 +17,12 @@ const Categories = () => {
             <FoodRow 
                 title="Categories" 
                 data={categories?.categories} 
-                fields={{ id: "idCategory", title: "strCategory", description: "strCategoryDescription", image: "strCategoryThumb" }}
+                fields={{ 
+                    id: "idCategory", 
+                    title: "strCategory", 
+                    description: "strCategoryDescription", 
+                    image: "strCategoryThumb" 
+                }}
                 getPath={(category) => `/category/${category?.title}`} />
         </>
     )

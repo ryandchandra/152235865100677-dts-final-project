@@ -10,7 +10,7 @@ import Search from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const suggestions = ["apple","chicken","cake","fish","ham","lamb","noodles","orange","pasta","pizza","steak","soup","tomato",];
+const suggestions = ["apple","chicken","cake","fish","ham","lamb","noodles","orange","pasta","pie","pizza","steak","soup","tomato",];
 
 const HomeHero = () => {
     const navigate = useNavigate();
@@ -25,7 +25,15 @@ const HomeHero = () => {
 
     return (
         <>
-            <Box sx={{ minHeight: "90vh", width: "100%", backgroundColor: "primary.main", backgroundImage: '', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+            <Box sx={{ 
+                minHeight: "90vh", 
+                width: "100%", 
+                backgroundColor: "primary.main", 
+                display: "flex", 
+                flexDirection: "column", 
+                justifyContent: "center", 
+                alignItems: "center"
+            }}>
                 <Typography variant="h2" color="info" sx={{ fontWeight: "bold" }}>Welcome</Typography>
                 <Avatar src="images/logo/logo-white.png" alt="Logo" sx={{ width: 200, height: 200 }} />
                 <Box component="form" noValidate onSubmit={onSubmit} sx={{ width: "50%" }}>
@@ -47,10 +55,10 @@ const HomeHero = () => {
                               </InputAdornment>
                             ),
                         }} />
-                    <Button type="submit" variant="contained" color="secondary" sx={{ mx: 5, minWidth: 160 }}>Search</Button>
-                    <Button href="/random" variant="contained" color="secondary" sx={{ mx: 5, minWidth: 160 }}>Surprise Me!</Button>
+                    <Button type="submit" variant="contained" color="secondary" sx={{ mx: 5, my: 2, minWidth: 160 }}>Search</Button>
+                    <Button href="/random" variant="contained" color="secondary" sx={{ mx: 5, my: 2, minWidth: 160 }}>Surprise Me!</Button>
                 </Box>
-                <Box sx={{ marginTop: "5rem" }}>
+                <Box sx={{ marginTop: "5rem", padding: "0 5rem" }}>
                     <Typography variant="h6" color="info" sx={{ fontWeight: "bold", color: "info.main" }}>Suggestions:</Typography>
                     { suggestions.map((suggestion) => <Button key={suggestion} href={`/search?term=${suggestion}`} color="info">{suggestion}</Button>)}
                 </Box>

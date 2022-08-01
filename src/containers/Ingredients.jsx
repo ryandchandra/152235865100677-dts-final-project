@@ -43,7 +43,12 @@ const Ingredients = () => {
                 data={ingredients?.meals
                     ?.filter((ingredient, ingredientIndex) => ingredientIndex>=(page-1)*ENTRIES_ON_ONE_PAGE && ingredientIndex<page*ENTRIES_ON_ONE_PAGE)
                     ?.map((ingredient) => ({...ingredient, strIngredientThumb: `https://www.themealdb.com/images/ingredients/${ingredient.strIngredient}.png`}))} 
-                fields={{ id: "idIngredient", title: "strIngredient", description: "strDescription", image: "strIngredientThumb" }}
+                fields={{ 
+                    id: "idIngredient", 
+                    title: "strIngredient", 
+                    description: "strDescription", 
+                    image: "strIngredientThumb" 
+                }}
                 getPath={(ingredient) => `/ingredient/${ingredient?.title}`} />
             <Pagination color="primary" count={ingredients?.meals?.length ? Math.ceil(ingredients?.meals?.length/ENTRIES_ON_ONE_PAGE) : 1} page={page} onChange={onPaginationChange}/>
         </Box>

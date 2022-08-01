@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
+
+import { ScreenContext } from '../contexts/ScreenContext';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -18,7 +20,15 @@ import { useSearchMealQuery } from '../services/theMealDBAPI';
 
 const ENTRIES_ON_ONE_PAGE = 5;
 
+const filters = [
+    { id: 1, name: "Category", field: "category", placeholder: "ex. breakfast, chicken, dessert, seafood, vegan" },
+    { id: 2, name: "Area", field: "area", placeholder: "ex. american, british, mexican, moroccoan" },
+    { id: 3, name: "Ingredient", field: "ingredient", placeholder: "ex. beef, chicken, pork, potato, salmon" },
+]
+
 const Search = () => {
+    const { isMobile } = useContext(ScreenContext);
+
     const [searchTerm, setSearchTerm] = useState('');
     const [filterTerm, setFilterTerm] = useState({ category: '', area: '', ingredient: '' })
     const [filteredData, setFilteredData] = useState([]);
@@ -54,16 +64,15 @@ const Search = () => {
         if (queryStrings.get('term')){
             setSearchTerm(queryStrings.get('term'));
         }
-        if (queryStrings.get('category')){
-            setFilterTerm((filterTerm) => ({ ...filterTerm, category: queryStrings.get('category')}));
-        }
-        if (queryStrings.get('area')){
-            setFilterTerm((filterTerm) => ({ ...filterTerm, area: queryStrings.get('area')}));
-        }
-        if (queryStrings.get('ingredient')){
-            setFilterTerm((filterTerm) => ({ ...filterTerm, ingredient: queryStrings.get('ingredient')}));
-        }
-    }, [queryStrings]);
+        filters.forEach((filter) => {
+            if (queryStrings.get(filter.field)){
+                setFilterTerm((filterTerm) => ({ ...filterTerm, [filter.field]: queryStrings.get(filter.field)}));
+            }
+        })
+
+        // reset the page (go to first page again)
+        dispatch(reset());
+    }, [queryStrings, dispatch]);
 
     useEffect(() => {
         document.title = "DAN | Search"
@@ -91,7 +100,9 @@ const Search = () => {
                 flexDirection: "column", 
                 alignItems: "center", 
                 gap: "5rem", 
-                backgroundImage: "linear-gradient(to bottom, rgb(230,230,230) 0%, rgb(230,230,230) 275px, rgb(255, 255, 255) 275px, rgb(255, 255, 255) 100%)"  
+                backgroundImage: isMobile
+                    ? "linear-gradient(to bottom, rgb(230,230,230) 0%, rgb(230,230,230) 400px, rgb(255, 255, 255) 400px, rgb(255, 255, 255) 100%)"  
+                    : "linear-gradient(to bottom, rgb(230,230,230) 0%, rgb(230,230,230) 275px, rgb(255, 255, 255) 275px, rgb(255, 255, 255) 100%)"  
             }}>
                 <Box component="form" noValidate onSubmit={onSubmit} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "80%" }}>
                     <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", gap: "2rem" }}>
@@ -120,40 +131,32 @@ const Search = () => {
                     <br/>
                     <Typography variant="h6" color="info" >Additional Filters</Typography>
                     <br/>
-                    <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", gap: "2rem" }}>
-                        <Typography variant="h6" color="info" >Category</Typography>
-                        <TextField
-                            margin="none"
-                            id="category"
-                            placeholder="Category"
-                            name="category"
-                            autoComplete="category"
-                            value={filterTerm.category}
-                            onChange={(event) => setFilterTerm({ ...filterTerm, category: event.target.value})}
-                            size="small"
-                            sx={{ backgroundColor: "info.main", flex: 1 }} />
-                        <Typography variant="h6" color="info" >Area</Typography>
-                        <TextField
-                            margin="none"
-                            id="area"
-                            placeholder="Area"
-                            name="area"
-                            autoComplete="area"
-                            value={filterTerm.area}
-                            onChange={(event) => setFilterTerm({ ...filterTerm, area: event.target.value})}
-                            size="small"
-                            sx={{ backgroundColor: "info.main", flex: 1 }} />
-                        <Typography variant="h6" color="info" >Ingredient</Typography>
-                        <TextField
-                            margin="none"
-                            id="ingredient"
-                            placeholder="Ingredient"
-                            name="ingredient"
-                            autoComplete="ingredient"
-                            value={filterTerm.ingredient}
-                            onChange={(event) => setFilterTerm({ ...filterTerm, ingredient: event.target.value})}
-                            size="small"
-                            sx={{ backgroundColor: "info.main", flex: 1 }} />
+                    <Box sx={{ 
+                        display: "flex", 
+                        flexDirection: isMobile ? "column" : "row", 
+                        justifyContent: "center", 
+                        alignItems: "center", 
+                        width: "100%", 
+                        gap: "2rem" 
+                    }}>
+                        {
+                            filters.map((filter) => {
+                                return <Box key={filter.name + "box"} sx={{ display: "flex", flexDirection: "row", flex: 1, alignItems: "center", width: isMobile ? "100%" : "auto" }}>
+                                    <Typography key={filter.name + "typography"} variant="h6" color="info" sx={{ flex: 1 }} textAlign="left" >{filter.name}</Typography>
+                                    <TextField
+                                        key={filter.name + "field"}
+                                        margin="none"
+                                        id={filter.field}
+                                        placeholder={filter.placeholder}
+                                        name={filter.field}
+                                        autoComplete={filter.field}
+                                        value={filterTerm[filter.field]}
+                                        onChange={(event) => setFilterTerm({ ...filterTerm, [filter.field]: event.target.value})}
+                                        size="small"
+                                        sx={{ backgroundColor: "info.main", width: "80%" }} />
+                                </Box>   
+                            })
+                        }
                     </Box>
                 </Box>
                 <Box sx={{ 

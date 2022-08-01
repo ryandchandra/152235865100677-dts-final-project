@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { ScreenContext } from '../contexts/ScreenContext';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,11 +11,15 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 const FoodCard = ({ data, size = {}, getPath }) => {
+    const { isMobile } = useContext(ScreenContext)
+
+    const descriptionLimit = isMobile ? 100 : 200;
 
     return (
         <Card sx={{ 
             ...size, 
             width: "20%", 
+            minWidth: 225,
             maxWidth: 300, 
             minHeight: 400,
             mb: 2, 
@@ -29,7 +35,9 @@ const FoodCard = ({ data, size = {}, getPath }) => {
                 alt={data?.title} />
             <CardContent>
                 <Typography variant="h6" textAlign="left">{data?.title}</Typography>
-                <Typography textAlign="justify">{data?.description?.substring(0,200)}{data?.description?.length>200 ? "..." : ""}</Typography>
+                <Typography textAlign="justify">
+                    {data?.description?.substring(0,descriptionLimit)}{data?.description?.length>descriptionLimit ? "..." : ""}
+                </Typography>
             </CardContent>
             <Box sx={{ flex: 1 }} />
             { getPath ? (

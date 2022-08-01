@@ -4,14 +4,16 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ClickableAvatar from '../components/ClickableAvatar';
 import FoodIngredientRow from '../components/FoodIngredientRow';
 
 import { useGetMealByIdQuery } from '../services/theMealDBAPI';
 
-
 const Detail = () => {
+    const isMobile = useMediaQuery('(max-width:899px)')
+
     const params = useParams();
     const navigate = useNavigate();
 
@@ -41,22 +43,30 @@ const Detail = () => {
         <>
             <Box sx={{ 
                 display: "flex", 
-                flexDirection: "row", 
-                alignItems: "flex-start", 
-                padding: "5rem 10rem", 
+                flexDirection: isMobile ? "column" : "row", 
+                alignItems: isMobile ? "center" : "flex-start", 
+                padding: isMobile ? "5rem" : "5rem 10rem", 
                 backgroundImage: "linear-gradient(to bottom, rgb(230,230,230) 0%, rgb(230,230,230) 275px, rgb(255, 255, 255) 275px, rgb(255, 255, 255) 100%)" 
             }}>
-                <ClickableAvatar src={meal?.strMealThumb} alt={meal?.strMeal} variant="square" sx={{ width: 500, height: 500, border: "10px solid white" }}/>
-                <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0 5rem" }}>
+                <ClickableAvatar 
+                    src={meal?.strMealThumb} 
+                    alt={meal?.strMeal} 
+                    variant="square" 
+                    sx={{ 
+                        width: isMobile ? 400 : 500, 
+                        height: isMobile ? 400 : 500, 
+                        border: "10px solid white" 
+                    }}/>
+                <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: isMobile ? "2rem 0" : "0 5rem" }}>
                     <Typography variant="h2" color="primary" sx={{ fontWeight: "bold" }} textAlign="left">{meal?.strMeal}</Typography>
                     <br/>
-                    <Typography variant="h5" sx={{ fontWeight: "semi-bold", color: "info.dark" }}>
+                    <Typography variant="h5" sx={{ color: "info.dark" }}>
                         Category:
                         &nbsp;
-                        <Link to={`/category/${meal?.strCategory}`} style={{ textDecoration: "none", fontWeight: "bold", color: "inherit" }}>{meal?.strCategory}</Link>
+                        <Link to={`/category/${meal?.strCategory}`} style={{ fontWeight: "bold" }}>{meal?.strCategory}</Link>
                     </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: "semi-bold", color: "info.dark" }}>Area: {meal?.strArea}</Typography>
-                    <Typography variant="h5" sx={{ fontWeight: "semi-bold", color: "info.dark" }}>Tags: {meal?.strTags}</Typography>
+                    <Typography variant="h5" sx={{ color: "info.dark" }}>Area: {meal?.strArea}</Typography>
+                    <Typography variant="h5" sx={{ color: "info.dark" }}>Tags: {meal?.strTags}</Typography>
                     <br/>
                     <Typography variant="h6" sx={{ color: "info.dark" }}>Instructions:</Typography> 
                     <Box>

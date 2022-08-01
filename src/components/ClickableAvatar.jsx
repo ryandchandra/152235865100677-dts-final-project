@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
+import { ScreenContext } from '../contexts/ScreenContext';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const ClickableAvatar = (props) => {
-    const isMobile = useMediaQuery('(max-width:899px)');
+    const { isMobile } = useContext(ScreenContext)
     const [open, setOpen] = useState(false);
 
     const onAvatarClick = () => setOpen(!open);
-
-    console.log(isMobile)
 
     return (
         <>
@@ -29,7 +28,8 @@ const ClickableAvatar = (props) => {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    userSelect: "none",
                 }} onClick={onAvatarClick}>
                     <img
                         src={props.src}
