@@ -29,10 +29,10 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route path="category" element={<Categories />} />
             <Route path="category/:category" element={<CategoryDetail />} />
-            <Route path="ingredient" element={<Ingredients />} />
+            <Route path="category" element={<Categories />} />
             <Route path="ingredient/:ingredient" element={<IngredientDetail />} />
+            <Route path="ingredient" element={<Ingredients />} />
             <Route path="meal/:id" element={<ProtectedRoute><Detail /></ProtectedRoute>} />
             <Route path="search" element={<Search />} />
             <Route path="random" element={<Random />} />
