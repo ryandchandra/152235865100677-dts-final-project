@@ -1,9 +1,10 @@
 import React from 'react';
+
 import FoodCard from './FoodCard';
 
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const FoodRow = ({ title, limit = 20, size = {}, data, fields, more, morePath, moreText, getPath, padding }) => {
 

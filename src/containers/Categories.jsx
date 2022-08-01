@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+
 import FoodRow from '../components/FoodRow';
+
 import { useGetCategoriesQuery } from '../services/theMealDBAPI';
 
 const Categories = () => {

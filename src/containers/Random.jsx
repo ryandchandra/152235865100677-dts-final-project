@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useRandomQuery } from '../services/theMealDBAPI';
 import { useNavigate } from 'react-router-dom';
+
+import { useRandomQuery } from '../services/theMealDBAPI';
 
 const Random = () => {
     const navigate = useNavigate();

@@ -3,12 +3,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import Search from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 const suggestions = ["apple","chicken","cake","fish","ham","lamb","noodles","orange","pasta","pizza","steak","soup","tomato",];
 

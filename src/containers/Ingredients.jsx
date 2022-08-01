@@ -1,20 +1,31 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
-import FoodRow from '../components/FoodRow';
-import { useGetIngredientsQuery } from '../services/theMealDBAPI';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
 
 import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 
+import FoodRow from '../components/FoodRow';
+
+import { useGetIngredientsQuery } from '../services/theMealDBAPI';
+
 const ENTRIES_ON_ONE_PAGE = 10;
 
 const Ingredients = () => {
-    const [page, setPage] = useState(1);
+    const page = useSelector(selectPage);
+    const dispatch = useDispatch();
 
     const { data: ingredients } = useGetIngredientsQuery();
 
-    const onPaginationChange = (event, value) => setPage(value);
+    const onPaginationChange = (event, value) => dispatch(setPage(value));
 
+    // reset page on mount
+    useEffect(() => {
+        dispatch(reset());
+    }, [dispatch])
+
+    // change document title
     useEffect(() => {
         document.title = `DAN | Ingredients`
     }, [])

@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-
-// import Search from '@mui/icons-material/Search';
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { grey } from "@mui/material/colors";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { signOut } from 'firebase/auth';
 import { auth } from '../authentication/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+// import Search from '@mui/icons-material/Search';
+
+import { grey } from "@mui/material/colors";
+
+import { selectAnchorNav, selectAnchorUser, setAnchorNav, setAnchorUser } from '../features/navbar/navbarSlice';
 
 const pages = [
     { display: 'Home', path: "/" }, 
@@ -32,25 +36,22 @@ const pages = [
 
 const NavBar = () => {
     const [user] = useAuthState(auth);
-    const [anchorElNav, setAnchorElNav] = useState(null);
-    const [anchorElUser, setAnchorElUser] = useState(null);
     const navigate = useNavigate();
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
+    const anchorNav = useSelector(selectAnchorNav);
+    const anchorUser = useSelector(selectAnchorUser);
+    const dispatch = useDispatch();
+
+    const handleOpenNavMenu = (event) => dispatch(setAnchorNav(event.currentTarget));
+
+    const handleOpenUserMenu = (event) => dispatch(setAnchorUser(event.currentTarget));
 
     const handleCloseNavMenu = (event, target) => {
-        setAnchorElNav(null);
+        dispatch(setAnchorNav(null));
         navigate(target);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    const handleCloseUserMenu = () => dispatch(setAnchorUser(null));
 
     const onLogout = async () => {
         try {
@@ -70,9 +71,7 @@ const NavBar = () => {
                             alt="DAN"
                             src="/images/logo/logo-white.png"
                             sx={{ width: 45, height: 45, display: { xs: 'none', md: 'flex' }, mr: 12 }}
-                            variant="square"
-                        // onClick={navigate("/")}
-                        />
+                            variant="square" />
                     </Link>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,7 +87,7 @@ const NavBar = () => {
                         </IconButton>
                         <Menu
                             id="menu-appbar"
-                            anchorEl={anchorElNav}
+                            anchorEl={anchorNav}
                             anchorOrigin={{
                                 vertical: 'bottom',
                                 horizontal: 'left',
@@ -98,7 +97,7 @@ const NavBar = () => {
                                 vertical: 'top',
                                 horizontal: 'left',
                             }}
-                            open={Boolean(anchorElNav)}
+                            open={Boolean(anchorNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
@@ -138,7 +137,7 @@ const NavBar = () => {
                                 <Menu
                                     sx={{ mt: '45px' }}
                                     id="menu-appbar"
-                                    anchorEl={anchorElUser}
+                                    anchorEl={anchorUser}
                                     anchorOrigin={{
                                         vertical: 'top',
                                         horizontal: 'right',
@@ -148,7 +147,7 @@ const NavBar = () => {
                                         vertical: 'top',
                                         horizontal: 'right',
                                     }}
-                                    open={Boolean(anchorElUser)}
+                                    open={Boolean(anchorUser)}
                                     onClose={handleCloseUserMenu} >
                                     <MenuItem onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center" onClick={onLogout}>Logout</Typography>

@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+
 import HomeHero from '../components/HomeHero';
 import FoodRow from '../components/FoodRow';
-import { useGetCategoriesQuery, useGetIngredientsQuery } from '../services/theMealDBAPI';
 import TodaySpecial from '../components/TodaySpecial';
+
+import { useGetCategoriesQuery, useGetIngredientsQuery } from '../services/theMealDBAPI';
 
 const Home = () => {
 

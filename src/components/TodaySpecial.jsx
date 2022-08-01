@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+
 import { useGetMealByIdQuery } from '../services/theMealDBAPI';
 
 const id = [52912,52922,52945,52987,52988,52989,52918,53025];

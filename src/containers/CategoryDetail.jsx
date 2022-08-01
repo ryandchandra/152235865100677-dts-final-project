@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetCategoriesQuery, useGetMealsByCategoryQuery } from '../services/theMealDBAPI';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
+
+import FoodRow from '../components/FoodRow';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-import FoodRow from '../components/FoodRow';
 import Pagination from '@mui/material/Pagination';
+
+import { useGetCategoriesQuery, useGetMealsByCategoryQuery } from '../services/theMealDBAPI';
 
 const ENTRIES_ON_ONE_PAGE = 5;
 
 const CategoryDetail = () => {
     const [category, setCategory] = useState({});
-    const [page, setPage] = useState(1);
+    
+    const page = useSelector(selectPage);
+    const dispatch = useDispatch();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -21,8 +27,14 @@ const CategoryDetail = () => {
     const { data: categories, categoryLoading } = useGetCategoriesQuery();
     const { data } = useGetMealsByCategoryQuery(params.category);
 
-    const onPaginationChange = (event, value) => setPage(value);
+    const onPaginationChange = (event, value) => dispatch(setPage(value));
 
+    // reset page on mount
+    useEffect(() => {
+        dispatch(reset())
+    }, [dispatch])
+
+    // if category (from route param) fails to load, redirect to /not-found
     useEffect(() => {
         if (!categoryLoading && categories && categories?.categories?.length){
             const index = categories?.categories?.findIndex((category) => category?.strCategory === params.category);
@@ -34,6 +46,7 @@ const CategoryDetail = () => {
         }
     }, [categoryLoading, categories, params, navigate])
 
+    // change document title
     useEffect(() => {
         if (category?.strCategory){
             document.title = `DAN | ${category?.strCategory}`

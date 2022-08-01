@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
-import { useGetMealByIdQuery } from '../services/theMealDBAPI';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
+
 import FoodIngredientRow from '../components/FoodIngredientRow';
+
+import { useGetMealByIdQuery } from '../services/theMealDBAPI';
+
 
 const Detail = () => {
     const params = useParams();

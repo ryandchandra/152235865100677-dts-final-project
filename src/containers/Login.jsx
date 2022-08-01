@@ -72,7 +72,7 @@ const Login = () => {
                     Login
                 </Button>
                 <Typography>{error}</Typography>
-                <Link to="/register" style={{ textDecoration: "none", color: "inherit" }}>Already have an account? Login</Link>
+                <Link to="/register" style={{ textDecoration: "none", color: "inherit" }}>Don't have an account? Register</Link>
             </Box>
         </Box>
     )

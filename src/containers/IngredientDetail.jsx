@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetIngredientsQuery, useGetMealsByMainIngredientQuery } from '../services/theMealDBAPI';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { reset, setPage, selectPage } from '../features/pagination/paginationSlice';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
 
 import FoodRow from '../components/FoodRow';
-import Pagination from '@mui/material/Pagination';
+
+import { useGetIngredientsQuery, useGetMealsByMainIngredientQuery } from '../services/theMealDBAPI';
 
 const ENTRIES_ON_ONE_PAGE = 5;
 
 const IngredientDetail = () => {
     const [ingredient, setIngredient] = useState({});
-    const [page, setPage] = useState(1);
+
+    const page = useSelector(selectPage);
+    const dispatch = useDispatch();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -21,8 +27,14 @@ const IngredientDetail = () => {
     const { data: ingredients, ingredientLoading } = useGetIngredientsQuery();
     const { data } = useGetMealsByMainIngredientQuery(params.ingredient);
 
-    const onPaginationChange = (event, value) => setPage(value);
+    const onPaginationChange = (event, value) => dispatch(setPage(value));
 
+    // reset page count on mount
+    useEffect(() => {
+        dispatch(reset());
+    }, [dispatch])
+
+    // if ingredient fails to load, redirect to /not-found
     useEffect(() => {
         if (!ingredientLoading && ingredients && ingredients?.meals?.length){
             const index = ingredients?.meals?.findIndex((ingredient) => ingredient?.strIngredient === params.ingredient);
@@ -34,6 +46,7 @@ const IngredientDetail = () => {
         }
     }, [ingredientLoading, ingredients, params, navigate])
 
+    // change document title
     useEffect(() => {
         if (ingredient?.strIngredient){
             document.title = `DAN | ${ingredient?.strIngredient}`
